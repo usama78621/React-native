@@ -3,11 +3,13 @@ import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, StatusBar }
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
+import auth from '@react-native-firebase/auth';
 
 export default function Login({ navigation }) {
     const [state, setState] = useState({
         email: "",
         password: "",
+        Comfirmpassword: "",
         secureTextEntry: true,
         Comfirm_secureTextEntry: true,
         text_inputChange: false
@@ -41,8 +43,31 @@ export default function Login({ navigation }) {
         })
     }
     const handleSubmit = () => {
-        console.log('1344')
-        console.log(state);
+        if (state.password !== state.Comfirmpassword) {
+            return alert("Please enter same Password")
+        }
+        auth()
+            .createUserWithEmailAndPassword(state.email, state.password)
+            .then(() => {
+                setState({
+                    email: "",
+                    password: "",
+                    Comfirmpassword: ""
+                })
+                alert('User account created & signed in!');
+            })
+            .catch(error => {
+                if (error.code === 'auth/email-already-in-use') {
+                    alert('That email address is already in use!');
+                }
+
+                if (error.code === 'auth/invalid-email') {
+                    alert('That email address is invalid!');
+                }
+
+                alert(error);
+            });
+
     }
     return (
         <View style={styles.mainContainer}>
@@ -65,6 +90,7 @@ export default function Login({ navigation }) {
                         placeholderTextColor="#666666"
                         onChangeText={(val) => handleChange("email", val)}
                         keyboardType="email-address"
+                        value={state.email}
                     />
                     {state.text_inputChange ?
                         <Feather
@@ -91,6 +117,7 @@ export default function Login({ navigation }) {
                         placeholderTextColor="#666666"
                         onChangeText={(val) => handleChange("password", val)}
                         keyboardType="numeric"
+                        value={state.password}
                     />
                     <TouchableOpacity
                         onPress={handleShowPassord}
@@ -124,8 +151,9 @@ export default function Login({ navigation }) {
                         autoCapitalize='none'
                         style={styles.inputText}
                         placeholderTextColor="#666666"
-                        onChangeText={(val) => handleChange("Comfirm", val)}
+                        onChangeText={(val) => handleChange("Comfirmpassword", val)}
                         keyboardType="numeric"
+                        value={state.Comfirmpassword}
                     />
                     <TouchableOpacity
                         onPress={handleComfirmShowPassord}

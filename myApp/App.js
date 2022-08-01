@@ -1,15 +1,16 @@
 import React from 'react'
+import { AuthProvider } from './src/components/context/AuthContext';
 import Footer from './src/components/Footer/Footer'
 import Header from './src/components/Header/Header'
 import StackNavigator from './src/Navigation/StackNavigator';
-import TabNavigator from './src/Navigation/TabNavigator';
 import Login from './src/screens/Auth/Login';
 
 
 export default function App() {
     return (
-        <StackNavigator />
-        // <Login />
-        // <TabNavigator />
+        <AuthProvider>
+            <StackNavigator />
+        </AuthProvider>
+
     )
 }

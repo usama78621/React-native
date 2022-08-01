@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, StatusBar }
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
+import auth from '@react-native-firebase/auth';
+
 
 export default function Login({ navigation }) {
     const [state, setState] = useState({
@@ -33,9 +35,25 @@ export default function Login({ navigation }) {
             secureTextEntry: !state.secureTextEntry,
         })
     }
-    const handleSubmit = () => {
-        console.log('1344')
-        console.log(state);
+    const handleSubmit = async () => {
+        await auth()
+            .signInWithEmailAndPassword(state.email, state.password)
+            .then(() => {
+                setState({
+                    email: "",
+                    password: ""
+                })
+                alert('User signed in ');
+
+            })
+            .catch(error => {
+                if (error.code === 'auth/operation-not-allowed') {
+                    alert('Enable anonymous in your firebase console.');
+                }
+                alert(error);
+            });
+
+
     }
     return (
         <View style={styles.mainContainer}>
