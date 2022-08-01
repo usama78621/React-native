@@ -9,6 +9,7 @@ export default function Login({ navigation }) {
         email: "",
         password: "",
         secureTextEntry: true,
+        Comfirm_secureTextEntry: true,
         text_inputChange: false
     })
     const handleChange = (name, val) => {
@@ -33,6 +34,12 @@ export default function Login({ navigation }) {
             secureTextEntry: !state.secureTextEntry,
         })
     }
+    const handleComfirmShowPassord = () => {
+        setState({
+            ...state,
+            Comfirm_secureTextEntry: !state.Comfirm_secureTextEntry,
+        })
+    }
     const handleSubmit = () => {
         console.log('1344')
         console.log(state);
@@ -41,7 +48,7 @@ export default function Login({ navigation }) {
         <View style={styles.mainContainer}>
             <StatusBar backgroundColor='#009387' barStyle='light-content' />
             <View style={styles.header}>
-                <Text style={styles.h2}>Wellcome!</Text>
+                <Text style={styles.h2}>Register Now!</Text>
             </View>
             <View style={styles.footer}>
                 <Text style={styles.text_footer}>Email</Text>
@@ -102,9 +109,41 @@ export default function Login({ navigation }) {
                         }
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity>
-                    <Text style={{ color: '#009387', marginTop: 15 }}>Forgot password?</Text>
-                </TouchableOpacity>
+                <Text style={[styles.text_footer, {
+                    marginTop: 35
+                }]}>Comfirm Password</Text>
+                <View style={styles.action}>
+                    <FontAwesome
+                        name='lock'
+                        color="#05375a"
+                        size={22}
+                    />
+                    <TextInput
+                        placeholder='Comfirm Password'
+                        secureTextEntry={state.Comfirm_secureTextEntry ? true : false}
+                        autoCapitalize='none'
+                        style={styles.inputText}
+                        placeholderTextColor="#666666"
+                        onChangeText={(val) => handleChange("Comfirm", val)}
+                        keyboardType="numeric"
+                    />
+                    <TouchableOpacity
+                        onPress={handleComfirmShowPassord}
+                    >{state.Comfirm_secureTextEntry ?
+                        <Feather
+                            name="eye-off"
+                            color="grey"
+                            size={22}
+                        />
+                        :
+                        <Feather
+                            name="eye"
+                            color="grey"
+                            size={22}
+                        />
+                        }
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.button}>
                     <TouchableOpacity
                         style={styles.signIn}
@@ -116,7 +155,7 @@ export default function Login({ navigation }) {
                         >
                             <Text style={[styles.textSign, {
                                 color: '#fff'
-                            }]}>Sign In</Text>
+                            }]}>Sign Up</Text>
                         </LinearGradient>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -125,11 +164,11 @@ export default function Login({ navigation }) {
                             marginTop: 15,
                             borderWidth: 1
                         }]}
-                        onPress={() => navigation.navigate("register")}
+                        onPress={() => navigation.goBack()}
                     >
                         <Text style={[styles.textSign, {
                             color: '#009387'
-                        }]}>Sign Up</Text>
+                        }]}>Sign In</Text>
                     </TouchableOpacity>
                 </View>
 

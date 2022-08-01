@@ -8,8 +8,8 @@ import Login from './src/screens/Auth/Login';
 
 export default function App() {
     return (
-        // <StackNavigator />
-        <Login />
+        <StackNavigator />
+        // <Login />
         // <TabNavigator />
     )
 }
