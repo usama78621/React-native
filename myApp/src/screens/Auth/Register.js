@@ -42,11 +42,16 @@ export default function Login({ navigation }) {
             Comfirm_secureTextEntry: !state.Comfirm_secureTextEntry,
         })
     }
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        if (state.email === "") {
+            return alert("Plase enter email")
+        } if (state.password === "") {
+            return alert("Plase enter email")
+        }
         if (state.password !== state.Comfirmpassword) {
             return alert("Please enter same Password")
         }
-        auth()
+        await auth()
             .createUserWithEmailAndPassword(state.email, state.password)
             .then(() => {
                 setState({
@@ -60,12 +65,10 @@ export default function Login({ navigation }) {
                 if (error.code === 'auth/email-already-in-use') {
                     alert('That email address is already in use!');
                 }
-
                 if (error.code === 'auth/invalid-email') {
                     alert('That email address is invalid!');
                 }
-
-                alert(error);
+                console.log(error);
             });
 
     }

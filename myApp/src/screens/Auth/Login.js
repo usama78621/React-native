@@ -36,6 +36,12 @@ export default function Login({ navigation }) {
         })
     }
     const handleSubmit = async () => {
+        if (state.email === "") {
+            return alert("Plase enter email")
+        } else if (state.password === "") {
+            return alert("Please enter correct password")
+        }
+
         await auth()
             .signInWithEmailAndPassword(state.email, state.password)
             .then(() => {
@@ -49,6 +55,12 @@ export default function Login({ navigation }) {
             .catch(error => {
                 if (error.code === 'auth/operation-not-allowed') {
                     alert('Enable anonymous in your firebase console.');
+                }
+                if (error.code === 'auth/invalid-email') {
+                    alert("Please enter correct email")
+                }
+                if (error.code === 'auth/wrong-password') {
+                    alert("Please enter correct password")
                 }
                 alert(error);
             });
