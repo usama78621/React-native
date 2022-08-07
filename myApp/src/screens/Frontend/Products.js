@@ -1,19 +1,21 @@
 import React from 'react'
 import { View, Text, Image, FlatList, TouchableOpacity, StyleSheet } from 'react-native'
-import { restaurantData } from '../../contant/images'
 import { Dimensions } from "react-native";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
-export default function Products() {
+export default function Products({ navigation, product }) {
     const { width, height } = Dimensions.get("window");
+
 
     const renderItem = ({ item }) => {
         return <TouchableOpacity activeOpacity={10}
             style={{
                 marginBottom: 24
-            }
-            }
+            }}
+            onPress={() => navigation.navigate("Restaurant", {
+                item
+            })}
         >
             <View>
                 <Image
@@ -65,10 +67,12 @@ export default function Products() {
             </View>
         </TouchableOpacity>
     }
+
+
     return (
         <View>
             <FlatList
-                data={restaurantData}
+                data={product}
                 keyExtractor={item => `${item.id}`}
                 renderItem={renderItem}
                 contentContainerStyle={{
@@ -76,6 +80,7 @@ export default function Products() {
                     paddingBottom: 30
                 }}
             />
+
         </View>
     )
 }

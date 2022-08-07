@@ -1,14 +1,22 @@
-import React from 'react';
-import { Text, View, Image, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import React, { useEffect } from 'react';
+import { Text, View, Image, StyleSheet, FlatList, TouchableOpacity, SafeAreaView } from 'react-native';
 import { categoryData } from '../../contant/Icon'
+import { restaurantData } from '../../contant/images'
 import Products from './Products';
 
 export default function Home({ navigation }) {
-    const [seleted, setSeleted] = React.useState(null)
+    const [seleted, setSeleted] = React.useState({})
+    const [product, setProduct] = React.useState(restaurantData)
+    const [categorydata, setCategorydata] = React.useState(categoryData)
+    // useEffect(() => {
+    //     SetCategorySeleced()
+    // }, [seleted])
 
-    const SetCategorySeleced = (item) => (
+    const SetCategorySeleced = (item) => {
+        let restaurantList = product.filter(a => a.categories.includes(item.id))
+        setProduct(restaurantList)
         setSeleted(item)
-    )
+    }
 
     const renderItem = ({ item }) => (
         <TouchableOpacity style={{
@@ -21,8 +29,7 @@ export default function Home({ navigation }) {
             marginRight: 10,
             ...styles.shadow
         }}
-            onPress={() => SetCategorySeleced(item)}
-        >
+            onPress={() => SetCategorySeleced(item)}>
             <View
                 style={{
                     width: 50,
@@ -50,16 +57,16 @@ export default function Home({ navigation }) {
                     fontWeight: "700"
                 }}
             >{item.name}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity >
     )
 
     return (
-        <View >
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
             <View style={{ padding: 24 }} >
                 <Text style={{ fontSize: 20, }}>Main</Text>
                 <Text style={{ fontSize: 20, }}>Category</Text>
                 <FlatList
-                    data={categoryData}
+                    data={categorydata}
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     keyExtractor={item => `${item.id}`}
@@ -67,8 +74,8 @@ export default function Home({ navigation }) {
                     contentContainerStyle={{ paddingVertical: 24 }}
                 />
             </View>
-            <Products />
-        </View>
+            <Products navigation={navigation} product={product} />
+        </SafeAreaView>
     )
 }
 

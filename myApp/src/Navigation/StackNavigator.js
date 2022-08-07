@@ -11,6 +11,7 @@ import About from '../screens/Frontend/About'
 import Home from '../screens/Frontend/Home'
 import TabNavigation from './TabNavigation';
 import Header from '../components/Header/Header';
+import SingleProduct from '../screens/Frontend/SingleProduct';
 
 
 
@@ -54,7 +55,7 @@ export default function StackNavigator() {
                                 component={TabNavigation}
                             />
                             <Stack.Screen name="Contact" component={Contact} />
-                            <Stack.Screen name="About" component={About} />
+                            <Stack.Screen name="Restaurant" component={SingleProduct} />
                         </Stack.Navigator>
                     </>
                 )
