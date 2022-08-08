@@ -7,8 +7,6 @@ import Login from '../screens/Auth/Login';
 import Register from '../screens/Auth/Register';
 import { useAuthContext } from '../components/context/AuthContext';
 import Contact from '../screens/Frontend/Contact'
-import About from '../screens/Frontend/About'
-import Home from '../screens/Frontend/Home'
 import TabNavigation from './TabNavigation';
 import Header from '../components/Header/Header';
 import SingleProduct from '../screens/Frontend/SingleProduct';
