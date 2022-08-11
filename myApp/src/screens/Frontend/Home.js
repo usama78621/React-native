@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Text, View, Image, StyleSheet, FlatList, TouchableOpacity, SafeAreaView } from 'react-native';
-import { categoryData } from '../../contant/Icon'
-import { restaurantData } from '../../contant/images'
+import { categoryData } from '../../constants/icons'
+import { restaurantData } from '../../constants/images'
 import Products from './Products';
 
 export default function Home({ navigation }) {

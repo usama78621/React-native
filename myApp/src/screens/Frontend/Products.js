@@ -7,9 +7,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 export default function Products({ navigation, product }) {
     const { width, height } = Dimensions.get("window");
 
-
     const renderItem = ({ item }) => {
-        return <TouchableOpacity activeOpacity={10}
+        return <TouchableOpacity activeOpacity={1}
             style={{
                 marginBottom: 24
             }}
@@ -17,10 +16,14 @@ export default function Products({ navigation, product }) {
                 item
             })}
         >
-            <View>
+            <View
+                style={{
+                    marginBottom: 10
+                }}
+            >
                 <Image
-                    source={item.photo}
-                    resizeMode="center"
+                    source={item.photo[0]}
+                    resizeMode="cover"
                     style={{
                         width: '100%',
                         height: 200,
@@ -36,7 +39,7 @@ export default function Products({ navigation, product }) {
                         backgroundColor: "#fff",
                         borderRadius: 20,
                         padding: 10,
-                        width: width * 0.3,
+                        width: width * 0.35,
                         borderTopRightRadius: 25,
                         borderBottomLeftRadius: 25,
                         alignItems: 'center',
@@ -70,18 +73,16 @@ export default function Products({ navigation, product }) {
 
 
     return (
-        <View>
-            <FlatList
-                data={product}
-                keyExtractor={item => `${item.id}`}
-                renderItem={renderItem}
-                contentContainerStyle={{
-                    paddingHorizontal: 24,
-                    paddingBottom: 30
-                }}
-            />
+        <FlatList
+            data={product}
+            keyExtractor={item => `${item.id}`}
+            renderItem={renderItem}
+            contentContainerStyle={{
+                paddingHorizontal: 24,
+                paddingBottom: 30
+            }}
+        />
 
-        </View>
     )
 }
 

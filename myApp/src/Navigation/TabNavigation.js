@@ -4,6 +4,7 @@ import { createBottomTabNavigator, BottomTabBar } from '@react-navigation/bottom
 import Home from '../screens/Frontend/Home';
 import Svg, { Path } from 'react-native-svg'
 import { TouchableOpacity, View } from "react-native";
+import MyCart from '../screens/Frontend/Cart';
 
 const Tab = createBottomTabNavigator()
 export default function TabNavigation() {
@@ -99,7 +100,7 @@ export default function TabNavigation() {
             >
             </Tab.Screen>
             <Tab.Screen
-                name='Search'
+                name='cart'
                 component={Home}
                 options={{
 
@@ -120,7 +121,7 @@ export default function TabNavigation() {
             </Tab.Screen>
             <Tab.Screen
                 name='Like'
-                component={Home}
+                component={MyCart}
                 options={{
                     tabBarIcon: ({ focused, size, }) => (
                         <FontAwesome

@@ -7,6 +7,7 @@ import auth from '@react-native-firebase/auth';
 
 
 export default function Login({ navigation }) {
+
     const [state, setState] = useState({
         email: "",
         password: "",
@@ -15,12 +16,13 @@ export default function Login({ navigation }) {
     })
     const handleChange = (name, val) => {
         setState({ ...state, [name]: val })
-        if (val.length !== 0) {
+        if (state.email.length !== 0) {
             setState({
                 ...state,
                 [name]: val,
                 text_inputChange: true
             })
+            return
         } else {
             setState({
                 ...state,
@@ -50,17 +52,16 @@ export default function Login({ navigation }) {
                     password: ""
                 })
                 alert('User signed in ');
-
             })
             .catch(error => {
                 if (error.code === 'auth/operation-not-allowed') {
-                    alert('Enable anonymous in your firebase console.');
+                    return alert('Enable anonymous in your firebase console.');
                 }
                 if (error.code === 'auth/invalid-email') {
-                    alert("Please enter correct email")
+                    return alert("Please enter correct email")
                 }
                 if (error.code === 'auth/wrong-password') {
-                    alert("Please enter correct password")
+                    return alert("Please enter correct password")
                 }
                 alert(error);
             });
@@ -69,7 +70,7 @@ export default function Login({ navigation }) {
     }
     return (
         <View style={styles.mainContainer}>
-            <StatusBar backgroundColor='#009387' barStyle='light-content' />
+            <StatusBar backgroundColor='#FC6D3F' barStyle='light-content' />
             <View style={styles.header}>
                 <Text style={styles.h2}>Wellcome!</Text>
             </View>
@@ -133,7 +134,7 @@ export default function Login({ navigation }) {
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity>
-                    <Text style={{ color: '#009387', marginTop: 15 }}>Forgot password?</Text>
+                    <Text style={{ color: '#FC6D3F', marginTop: 15 }}>Forgot password?</Text>
                 </TouchableOpacity>
                 <View style={styles.button}>
                     <TouchableOpacity
@@ -141,7 +142,7 @@ export default function Login({ navigation }) {
                         onPress={handleSubmit}
                     >
                         <LinearGradient
-                            colors={['#08d4c4', '#01ab9d']}
+                            colors={['#FC6D3F', '#FC6D3F']}
                             style={styles.signIn}
                         >
                             <Text style={[styles.textSign, {
@@ -151,14 +152,14 @@ export default function Login({ navigation }) {
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={[styles.signIn, {
-                            borderColor: "#009387",
+                            borderColor: "#FC6D3F",
                             marginTop: 15,
                             borderWidth: 1
                         }]}
                         onPress={() => navigation.navigate("register")}
                     >
                         <Text style={[styles.textSign, {
-                            color: '#009387'
+                            color: '#FC6D3F'
                         }]}>Sign Up</Text>
                     </TouchableOpacity>
                 </View>
@@ -171,7 +172,7 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        backgroundColor: "#009387",
+        backgroundColor: "#FC6D3F",
     }, h2: {
         color: "#fff",
         fontSize: 30,

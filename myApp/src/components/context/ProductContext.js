@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useReducer, createContext, useContext } from "react";
-import { categoryData } from '../../contant/Icon'
 import { filter_reducer } from '../../reducer/ProductsReducer'
 
 const ProductsContext = createContext();
@@ -11,29 +10,36 @@ const initialState = {
 }
 const ProductProvider = ({ children }) => {
     const [state, dispatch] = useReducer(filter_reducer, initialState)
-    const addToCart = (restaurant) => {
-        dispatch({ type: 'ADD_TO_CART', payload: restaurant })
+    const addToCart = (restaurant, amount) => {
+        dispatch({ type: 'ADD_TO_CART', payload: { restaurant, amount } })
     }
+    console.log(state.cart);
+    console.log(state.total);
     const removeItem = (id) => {
         dispatch({ type: "REMOVE_ITEM", payload: id })
     }
     const cartclear = () => {
         dispatch({ type: "CART_CLEAR" })
     }
-    const decrease = (id) => {
-        dispatch({ type: "DESCEASE", payload: id })
+    const toggleAmount = (id, value) => {
+        dispatch({
+            type: "TOGGLE_CART_ITEM_AMOUNT",
+            payload: {
+                id,
+                value,
+            },
+        })
     }
-    const increase = (id) => {
-        dispatch({ type: "INCREASE", payload: id })
-    }
+    useEffect(() => {
+        dispatch({ type: 'COUNT_CART_TOTALS' })
+    }, [state.cart])
     return (
         <ProductsContext.Provider value={{
             ...state,
             addToCart,
             removeItem,
             cartclear,
-            decrease,
-            increase
+            toggleAmount
         }}>
             {children}
         </ProductsContext.Provider>

@@ -10,6 +10,8 @@ import Contact from '../screens/Frontend/Contact'
 import TabNavigation from './TabNavigation';
 import Header from '../components/Header/Header';
 import SingleProduct from '../screens/Frontend/SingleProduct';
+import AdminHome from '../admin/AdminHome';
+import MyCart from '../screens/Frontend/Cart';
 
 
 
@@ -36,7 +38,6 @@ export default function StackNavigator() {
                             screenOptions={{
                                 headerShown: false
                             }}
-                            initialRouteName={"Home"}
                         >
 
                             <Stack.Screen
@@ -54,6 +55,8 @@ export default function StackNavigator() {
                             />
                             <Stack.Screen name="Contact" component={Contact} />
                             <Stack.Screen name="Restaurant" component={SingleProduct} />
+                            <Stack.Screen name="admin" component={AdminHome} />
+                            <Stack.Screen name="cart" component={MyCart} />
                         </Stack.Navigator>
                     </>
                 )

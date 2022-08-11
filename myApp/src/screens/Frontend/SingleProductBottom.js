@@ -4,12 +4,19 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Dimensions } from "react-native";
 import { useProductsContext } from '../../components/context/ProductContext';
+import { COLORS, SIZES, FONTS } from '../../constants/theme'
 
 
 
-export default function SingleProductBottom({ restaurant }) {
+
+export default function SingleProductBottom({ restaurant, amount, navigation }) {
     const { width, height } = Dimensions.get("window");
-    const { total, addToCart, } = useProductsContext()
+    const { addToCart } = useProductsContext()
+
+    const handleCard = () => {
+        addToCart(restaurant, amount)
+        navigation.navigate("cart")
+    }
 
     return (
         <View style={{
@@ -25,8 +32,8 @@ export default function SingleProductBottom({ restaurant }) {
                     paddingHorizontal: 36,
                 }}
             >
-                <Text style={{ fontSize: 20, fontWeight: "bold" }}>Items In Cart</Text>
-                <Text style={{ fontSize: 20, fontWeight: "bold" }}>{total}$</Text>
+                <Text style={{ ...FONTS.h3 }}>Items In Cart</Text>
+                <Text style={{ ...FONTS.h3 }}>{Number(amount) * Number(restaurant.price)}$</Text>
             </View>
             <View
                 style={{
@@ -42,20 +49,20 @@ export default function SingleProductBottom({ restaurant }) {
                 }}>
                     <EvilIcons
                         name='location'
-                        size={40}
-                        style={{ fontWeight: "bold" }}
+                        size={30}
+                        style={{ fontWeight: "bold", }}
                     />
-                    <Text style={{ fontSize: 20, fontWeight: "bold" }}>Location</Text>
+                    <Text tyle={{ marginLeft: SIZES.padding, ...FONTS.h4 }}>Location</Text>
                 </View>
                 <View style={{
                     flexDirection: "row"
                 }}>
                     <FontAwesome
                         name='toggle-off'
-                        size={30}
+                        size={25}
 
                     />
-                    <Text style={{ fontSize: 20, fontWeight: "bold" }}>8888</Text>
+                    <Text style={{ marginLeft: SIZES.padding, ...FONTS.h4 }}>8888</Text>
                 </View>
 
             </View>
@@ -72,7 +79,7 @@ export default function SingleProductBottom({ restaurant }) {
                     padding: 10,
                     borderRadius: 10
                 }}
-                    onPress={() => addToCart(restaurant)}
+                    onPress={handleCard}
                 >
                     <Text style={{
                         textAlign: "center",
@@ -81,6 +88,6 @@ export default function SingleProductBottom({ restaurant }) {
                 </TouchableOpacity>
 
             </View>
-        </View >
+        </View>
     )
 }

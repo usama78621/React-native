@@ -16,7 +16,7 @@ export default function Login({ navigation }) {
     })
     const handleChange = (name, val) => {
         setState({ ...state, [name]: val })
-        if (val.length !== 0) {
+        if (state.email.length !== 0) {
             setState({
                 ...state,
                 [name]: val,
@@ -46,7 +46,7 @@ export default function Login({ navigation }) {
         if (state.email === "") {
             return alert("Plase enter email")
         } if (state.password === "") {
-            return alert("Plase enter email")
+            return alert("Plase enter password")
         }
         if (state.password !== state.Comfirmpassword) {
             return alert("Please enter same Password")
@@ -63,18 +63,21 @@ export default function Login({ navigation }) {
             })
             .catch(error => {
                 if (error.code === 'auth/email-already-in-use') {
-                    alert('That email address is already in use!');
+                    return alert('That email address is already in use!');
                 }
                 if (error.code === 'auth/invalid-email') {
-                    alert('That email address is invalid!');
+                    return alert('That email address is invalid!');
                 }
-                console.log(error);
+                if (error.code === 'auth/weak-password') {
+                    return alert('Password should be at least 6 characters');
+                }
+                alert(error);
             });
 
     }
     return (
         <View style={styles.mainContainer}>
-            <StatusBar backgroundColor='#009387' barStyle='light-content' />
+            <StatusBar backgroundColor='#FC6D3F' barStyle='light-content' />
             <View style={styles.header}>
                 <Text style={styles.h2}>Register Now!</Text>
             </View>
@@ -181,7 +184,7 @@ export default function Login({ navigation }) {
                         onPress={handleSubmit}
                     >
                         <LinearGradient
-                            colors={['#08d4c4', '#01ab9d']}
+                            colors={['#FC6D3F', '#FC6D3F']}
                             style={styles.signIn}
                         >
                             <Text style={[styles.textSign, {
@@ -191,14 +194,14 @@ export default function Login({ navigation }) {
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={[styles.signIn, {
-                            borderColor: "#009387",
+                            borderColor: "#FC6D3F",
                             marginTop: 15,
                             borderWidth: 1
                         }]}
                         onPress={() => navigation.goBack()}
                     >
                         <Text style={[styles.textSign, {
-                            color: '#009387'
+                            color: '#FC6D3F'
                         }]}>Sign In</Text>
                     </TouchableOpacity>
                 </View>
@@ -211,7 +214,7 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        backgroundColor: "#009387",
+        backgroundColor: "#FC6D3F",
     }, h2: {
         color: "#fff",
         fontSize: 30,

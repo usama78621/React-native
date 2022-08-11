@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
-export default function Header() {
+export default function Header({ navigation }) {
     return (
         <View style={styles.HeaderContainer}>
             <TouchableOpacity style={{
@@ -31,6 +31,7 @@ export default function Header() {
                 </View>
             </View>
             <TouchableOpacity
+
                 style={{
                     width: 50,
                     justifyContent: "center",

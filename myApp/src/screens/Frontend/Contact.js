@@ -19,6 +19,6 @@ export default function Contact({ navigation }) {
             <Button title='Go back About page'
                 color="#023047"
                 onPress={() => navigation.goBack()}></Button>
-        </View >
+        </View>
     )
 }
