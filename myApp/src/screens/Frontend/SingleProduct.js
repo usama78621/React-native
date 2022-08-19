@@ -1,18 +1,18 @@
 import React from 'react'
-import { Image, NativeBaseProvider } from 'native-base';
-import { View, Text, Animated, TouchableOpacity, SafeAreaView, } from 'react-native'
+import { NativeBaseProvider } from 'native-base';
+import { Image, View, Text, Animated, TouchableOpacity, } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import { Dimensions } from "react-native";
 import SingleProductBottom from './SingleProductBottom';
-import { useProductsContext } from '../../components/context/ProductContext';
+import { useCartContext } from '../../components/context/CartContext';
 import { COLORS, SIZES, FONTS } from '../../constants/theme'
-import MyCart from './Cart';
+import Swiper from 'react-native-swiper';
 
 
 export default function SingleProduct({ route, navigation }) {
     const { width, height } = Dimensions.get("window");
-    const { quantity, toggleAmount } = useProductsContext()
-    const scrollX = (new Animated.Value(0))
+    const { quantity, toggleAmount } = useCartContext()
+    // const scrollX = (new Animated.Value(0))
     const [restaurant, setRestaurant] = React.useState(null)
     const [amount, setAmount] = React.useState(1)
 
@@ -36,116 +36,85 @@ export default function SingleProduct({ route, navigation }) {
         setRestaurant(item)
     }, [])
 
-    function renderDots() {
-        const dotPosition = Animated.divide(scrollX, width)
-        return (
-            <View style={{ height: 30 }}>
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: 10
-                    }}
-                >
-                    {restaurant?.photo.map((item, index) => {
+    // function renderDots() {
+    //     const dotPosition = Animated.divide(scrollX, width)
+    //     return (
+    //         <View style={{ height: 30 }}>
+    //             <View
+    //                 style={{
+    //                     flexDirection: 'row',
+    //                     alignItems: 'center',
+    //                     justifyContent: 'center',
+    //                     height: 10
+    //                 }}
+    //             >
+    //                 {restaurant.images.map((item, index) => {
 
-                        const opacity = dotPosition.interpolate({
-                            inputRange: [index - 1, index, index + 1],
-                            outputRange: [0.3, 1, 0.3],
-                            extrapolate: "clamp"
-                        })
+    //                     const opacity = dotPosition.interpolate({
+    //                         inputRange: [index - 1, index, index + 1],
+    //                         outputRange: [0.3, 1, 0.3],
+    //                         extrapolate: "clamp"
+    //                     })
 
-                        const dotSize = dotPosition.interpolate({
-                            inputRange: [index - 1, index, index + 1],
-                            outputRange: [8 * 0.8, 12, 8 * 0.8],
-                            extrapolate: "clamp"
-                        })
+    //                     const dotSize = dotPosition.interpolate({
+    //                         inputRange: [index - 1, index, index + 1],
+    //                         outputRange: [8 * 0.8, 12, 8 * 0.8],
+    //                         extrapolate: "clamp"
+    //                     })
 
-                        const dotColor = dotPosition.interpolate({
-                            inputRange: [index - 1, index, index + 1],
-                            outputRange: ["#cdcdc2", "#FC6D3F", "#cdcdc2"],
-                            extrapolate: "clamp"
-                        })
+    //                     const dotColor = dotPosition.interpolate({
+    //                         inputRange: [index - 1, index, index + 1],
+    //                         outputRange: ["#cdcdc2", "#FC6D3F", "#cdcdc2"],
+    //                         extrapolate: "clamp"
+    //                     })
 
-                        return (
-                            <Animated.View
-                                key={`dot-${index}`}
-                                opacity={opacity}
-                                style={{
-                                    borderRadius: 22,
-                                    marginHorizontal: 6,
-                                    width: dotSize,
-                                    height: dotSize,
-                                    backgroundColor: dotColor
-                                }}
-                            />
-                        )
-                    })}
-                </View>
-            </View>
-        )
-    }
+    //                     return (
+    //                         <Animated.View
+    //                             key={`dot-${index}`}
+    //                             opacity={opacity}
+    //                             style={{
+    //                                 borderRadius: 22,
+    //                                 marginHorizontal: 6,
+    //                                 width: dotSize,
+    //                                 height: dotSize,
+    //                                 backgroundColor: dotColor
+    //                             }}
+    //                         />
+    //                     )
+    //                 })}
+    //             </View>
+    //         </View>
+    //     )
+    // }
     return (
         <>
             {restaurant &&
                 <NativeBaseProvider
                 >
-                    <Animated.ScrollView
-                        horizontal
-                        pagingEnabled
-                        scrollEventThrottle={16}
-                        snapToAlignment="center"
-                        showsHorizontalScrollIndicator={false}
-                        onScroll={Animated.event([
-                            { nativeEvent: { contentOffset: { x: scrollX } } }
-                        ], { useNativeDriver: false, })}
-                    >
-                        {
-                            restaurant?.photo.map((item, index) => (
-                                <View key={`menu-${index}`
-                                }
-                                    style={{
-                                        alignItems: "center"
-
-                                    }}>
-                                    <View style={{
-                                        height: height * 0.35,
-
-                                    }}>
-                                        <Image
-                                            source={item}
-                                            alt="image"
-                                            resizeMode="cover"
-                                            style={{
-                                                width: width,
-                                                height: "100%",
-                                            }}
-                                        />
-                                        <View style={{
-                                            position: "absolute",
-                                            bottom: -20,
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            flexDirection: "row",
-                                            width: width,
-                                            height: 50
-                                        }}>
-                                            {renderDots()}
-                                        </View>
-
-                                    </View>
-                                </View>
-                            ))
+                    <Swiper autoplay={true} autoplayTimeout={4}
+                        activeDot={
+                            <View style={{ backgroundColor: '#FC6D3F', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3, }} />
                         }
-                    </Animated.ScrollView>
+                    >
+                        {restaurant.images.map((item, index) => (
+                            <Image key={index} source={{ uri: item }}
+                                style={{
+                                    height: "100%",
+                                    width: "100%"
+                                }}
+                            />
+                        ))
+                        }
+
+                    </Swiper>
+
                     <View
                         style={{
                             justifyContent: "center",
                             alignItems: "center",
                             flexDirection: "row",
                             width: width,
-                            height: 40
+                            height: 50
                         }}
                     >
 
@@ -202,7 +171,7 @@ export default function SingleProduct({ route, navigation }) {
                             marginBottom: 20
                         }}
                     >
-                        <Text style={{ marginVertical: 10, textAlign: 'center', ...FONTS.h2 }}>{restaurant.name} - {restaurant.price.toFixed(2)}$</Text>
+                        <Text style={{ marginVertical: 10, textAlign: 'center', ...FONTS.h2 }}>{restaurant.nameProduct} - {restaurant.price.toFixed(2)}$</Text>
                         <Text style={{ ...FONTS.body3, textAlign: "center" }}>{restaurant.description}
                         </Text>
                     </View>
@@ -224,7 +193,7 @@ export default function SingleProduct({ route, navigation }) {
                         <Text style={{
                             ...FONTS.body3, color: COLORS.darygray,
                             marginLeft: 10
-                        }}>{restaurant.calories.toFixed(2)} cal</Text>
+                        }}>{restaurant.calorie.toFixed(2)} cal</Text>
                     </View>
                     <SingleProductBottom restaurant={restaurant} amount={amount} navigation={navigation} />
                 </NativeBaseProvider>

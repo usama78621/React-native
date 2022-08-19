@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Dimensions } from "react-native";
-import { useProductsContext } from '../../components/context/ProductContext';
+import { useCartContext } from '../../components/context/CartContext';
 import { COLORS, SIZES, FONTS } from '../../constants/theme'
 
 
@@ -11,7 +11,7 @@ import { COLORS, SIZES, FONTS } from '../../constants/theme'
 
 export default function SingleProductBottom({ restaurant, amount, navigation }) {
     const { width, height } = Dimensions.get("window");
-    const { addToCart } = useProductsContext()
+    const { addToCart } = useCartContext()
 
     const handleCard = () => {
         addToCart(restaurant, amount)

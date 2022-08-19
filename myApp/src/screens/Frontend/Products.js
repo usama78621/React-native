@@ -4,7 +4,7 @@ import { Dimensions } from "react-native";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
-export default function Products({ navigation, product }) {
+export default function Products({ navigation, products }) {
     const { width, height } = Dimensions.get("window");
 
     const renderItem = ({ item }) => {
@@ -22,7 +22,7 @@ export default function Products({ navigation, product }) {
                 }}
             >
                 <Image
-                    source={item.photo[0]}
+                    source={{ uri: item.images[0] }}
                     resizeMode="cover"
                     style={{
                         width: '100%',
@@ -51,7 +51,7 @@ export default function Products({ navigation, product }) {
                 </View>
                 <Text style={{
                     fontSize: 18,
-                }}>{item.name}</Text>
+                }}>{item.nameProduct}</Text>
 
                 <View style={{
                     marginTop: 10,
@@ -65,7 +65,7 @@ export default function Products({ navigation, product }) {
                             marginRight: 10
                         }}
                     />
-                    <Text>{item.rating}</Text>
+                    <Text>4.8</Text>
                 </View>
             </View>
         </TouchableOpacity>
@@ -74,7 +74,7 @@ export default function Products({ navigation, product }) {
 
     return (
         <FlatList
-            data={product}
+            data={products}
             keyExtractor={item => `${item.id}`}
             renderItem={renderItem}
             contentContainerStyle={{

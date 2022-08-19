@@ -4,8 +4,12 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import { useAuthContext } from '../../components/context/AuthContext';
+
 
 export default function Login({ navigation }) {
+    const { dispatch } = useAuthContext()
     const [state, setState] = useState({
         email: "",
         password: "",
@@ -43,6 +47,7 @@ export default function Login({ navigation }) {
         })
     }
     const handleSubmit = async () => {
+        let { email, uid } = user
         if (state.email === "") {
             return alert("Plase enter email")
         } if (state.password === "") {
@@ -50,6 +55,11 @@ export default function Login({ navigation }) {
         }
         if (state.password !== state.Comfirmpassword) {
             return alert("Please enter same Password")
+        }
+        let UserData = {
+            email,
+            uid,
+            role: "user"
         }
         await auth()
             .createUserWithEmailAndPassword(state.email, state.password)
@@ -59,7 +69,17 @@ export default function Login({ navigation }) {
                     password: "",
                     Comfirmpassword: ""
                 })
+                dispatch({ type: "LOGIN" })
                 alert('User account created & signed in!');
+                firestore()
+                    .collection('users')
+                    .doc(user.uid)
+                    .set(UserData)
+                    .then(() => {
+                        console.log('User added!');
+                    }).catch(e => {
+                        console.error(e)
+                    })
             })
             .catch(error => {
                 if (error.code === 'auth/email-already-in-use') {

@@ -31,7 +31,6 @@ const tomato_pasta = require("../asserts/assets/images/tomato-pasta.jpg");
 const affordable = 1
 const fairPrice = 2
 const expensive = 3
-
 export const restaurantData = [
     {
         id: 1,
@@ -49,6 +48,7 @@ export const restaurantData = [
             longitude: 110.35632207358996,
         },
     },
+
     {
         id: 2,
         name: "Hawaiian Pizza",

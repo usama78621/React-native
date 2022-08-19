@@ -1,22 +1,23 @@
-import React, { useEffect } from 'react';
-import { Text, View, Image, StyleSheet, FlatList, TouchableOpacity, SafeAreaView } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Text, View, Image, StyleSheet, FlatList, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+import { useGlobalProducts } from '../../components/context/ProductsContext';
 import { categoryData } from '../../constants/icons'
 import { restaurantData } from '../../constants/images'
 import Products from './Products';
 
 export default function Home({ navigation }) {
-    const [seleted, setSeleted] = React.useState({})
-    const [product, setProduct] = React.useState(restaurantData)
-    const [categorydata, setCategorydata] = React.useState(categoryData)
-    // useEffect(() => {
-    //     SetCategorySeleced()
-    // }, [seleted])
+    const [seleted, setSeleted] = useState({})
+    const [product, setProduct] = useState(restaurantData)
+    const [category, setCategory] = useState("")
+    const { products, products_error, products_loading } = useGlobalProducts()
 
-    const SetCategorySeleced = (item) => {
-        let restaurantList = product.filter(a => a.categories.includes(item.id))
-        setProduct(restaurantList)
-        setSeleted(item)
-    }
+    useEffect(() => {
+        if (category) {
+            let restaurantList = restaurantData.filter(a => a.categories.includes(category.id))
+            setProduct(restaurantList)
+            setSeleted(category)
+        }
+    }, [category])
 
     const renderItem = ({ item }) => (
         <TouchableOpacity style={{
@@ -29,7 +30,7 @@ export default function Home({ navigation }) {
             marginRight: 10,
             ...styles.shadow
         }}
-            onPress={() => SetCategorySeleced(item)}>
+            onPress={() => setCategory(item)}>
             <View
                 style={{
                     width: 50,
@@ -41,11 +42,12 @@ export default function Home({ navigation }) {
                 }}
             >
                 <Image
-                    source={item.icon}
+                    source={{ uri: item.images[0] }}
                     resizeMode="contain"
                     style={{
-                        width: 30,
-                        height: 30,
+                        width: 45,
+                        height: 45,
+                        borderRadius: 22
                     }}
 
                 />
@@ -56,7 +58,7 @@ export default function Home({ navigation }) {
                     color: (seleted?.id === item.id ? "white" : "#222"),
                     fontWeight: "700"
                 }}
-            >{item.name}</Text>
+            >{item.category}</Text>
         </TouchableOpacity >
     )
 
@@ -66,7 +68,7 @@ export default function Home({ navigation }) {
                 <Text style={{ fontSize: 20, }}>Main</Text>
                 <Text style={{ fontSize: 20, }}>Category</Text>
                 <FlatList
-                    data={categorydata}
+                    data={products}
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     keyExtractor={item => `${item.id}`}
@@ -74,7 +76,7 @@ export default function Home({ navigation }) {
                     contentContainerStyle={{ paddingVertical: 24 }}
                 />
             </View>
-            <Products navigation={navigation} product={product} />
+            <Products navigation={navigation} products={products} />
         </SafeAreaView>
     )
 }

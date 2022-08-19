@@ -7,10 +7,10 @@ import {
     Image,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useProductsContext } from '../../components/context/ProductContext';
+import { useCartContext } from '../../components/context/CartContext';
 
-const MyCart = ({ navigation }) => {
-    const { cart, removeItem, toggleAmount, total } = useProductsContext()
+const MyCart = () => {
+    const { cart, removeItem, toggleAmount, total } = useCartContext()
 
     const increase = (id) => {
         toggleAmount(id, "inc")
@@ -19,7 +19,7 @@ const MyCart = ({ navigation }) => {
         toggleAmount(id, "dec")
     }
 
-    const renderProducts = (cart, index) => {
+    const renderProducts = (cartItem, index) => {
         return (
             <TouchableOpacity
                 key={index}
@@ -42,7 +42,7 @@ const MyCart = ({ navigation }) => {
                         marginRight: 22,
                     }}>
                     <Image
-                        source={cart.photo[0]}
+                        source={{ uri: cartItem.images[0] }}
                         style={{
                             width: '100%',
                             height: '100%',
@@ -81,7 +81,7 @@ const MyCart = ({ navigation }) => {
                                     maxWidth: '85%',
                                     marginRight: 4,
                                 }}>
-                                Price  {cart.price}$
+                                Price  {cartItem.price}$
                             </Text>
                         </View>
                     </View>
@@ -97,7 +97,7 @@ const MyCart = ({ navigation }) => {
                                 alignItems: 'center',
                             }}>
                             <TouchableOpacity
-                                onPress={() => decrease(cart.id)}
+                                onPress={() => decrease(cartItem.id)}
                                 style={{
                                     borderRadius: 100,
                                     marginRight: 20,
@@ -114,9 +114,9 @@ const MyCart = ({ navigation }) => {
                                     }}
                                 />
                             </TouchableOpacity>
-                            <Text>{cart.quantity}</Text>
+                            <Text>{cartItem.amount}</Text>
                             <TouchableOpacity
-                                onPress={() => increase(cart.id)}
+                                onPress={() => increase(cartItem.id)}
                                 style={{
                                     borderRadius: 100,
                                     marginLeft: 20,
@@ -134,7 +134,7 @@ const MyCart = ({ navigation }) => {
                                 />
                             </TouchableOpacity>
                         </View>
-                        <TouchableOpacity onPress={() => removeItem(cart.id)}>
+                        <TouchableOpacity onPress={() => removeItem(cartItem.id)}>
                             <MaterialCommunityIcons
                                 name="delete-outline"
                                 style={{
