@@ -13,6 +13,7 @@ export default function SingleProductBottom({ restaurant, amount, navigation }) 
     const { width, height } = Dimensions.get("window");
     const { addToCart } = useCartContext()
 
+
     const handleCard = () => {
         addToCart(restaurant, amount)
         navigation.navigate("cart")

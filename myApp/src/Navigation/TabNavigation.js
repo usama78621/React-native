@@ -3,14 +3,38 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import { createBottomTabNavigator, BottomTabBar } from '@react-navigation/bottom-tabs';
 import Home from '../screens/Frontend/Home';
 import Svg, { Path } from 'react-native-svg'
-import { TouchableOpacity, View } from "react-native";
-import MyCart from '../screens/Frontend/Cart';
-import Maps from '../screens/Frontend/Maps';
+import { TouchableOpacity, View, Text } from "react-native";
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Addproducts from '../screens/Dashboard/Addproducts';
 import Contact from '../screens/Frontend/Contact';
+import HomeMian from '../screens/Frontend/HomeMian';
+import { navigationRef } from '../screens/Frontend/RootNavigation'
+import Profile from '../screens/Frontend/Profle';
+import { useAuthContext } from '../components/context/AuthContext';
+import Like from '../screens/Like';
 
 const Tab = createBottomTabNavigator()
 export default function TabNavigation() {
+    const { Authenticated } = useAuthContext()
+    // function LogoTitle() {
+    //     return (
+    //         <View style={{ flex: 1, justifyContent: 'center', alignItems: "center" }}>
+    //             <View
+    //                 style={{
+    //                     width: '50%',
+    //                     height: "100%",
+    //                     backgroundColor: '#eee',
+    //                     alignItems: 'center',
+    //                     justifyContent: 'center',
+    //                     borderRadius: 25
+    //                     // <Button title='lOGOUT' onPress={handleLogout} />
+    //                 }}
+    //             >
+    //                 <Text style={{ fontSize: 20 }}>Location</Text>
+    //             </View>
+    //         </View>
+    //     );
+    // }
 
     const TabBarCustomButton = ({ accessibilityState, children, onPress }) => {
 
@@ -69,9 +93,9 @@ export default function TabNavigation() {
 
     return (
         <Tab.Navigator
+            ref={navigationRef}
             screenOptions={{
                 showLabel: false,
-                headerShown: false,
                 style: {
                     position: 'absolute',
                     left: 0,
@@ -84,9 +108,12 @@ export default function TabNavigation() {
             }}
         >
             <Tab.Screen
-                name='Home'
-                component={Home}
+                name='HomeMian'
+                component={HomeMian}
+
                 options={{
+
+                    headerShown: false,
                     tabBarIcon: ({ focused, size, }) => (
                         <FontAwesome
                             name='home'
@@ -103,13 +130,12 @@ export default function TabNavigation() {
             >
             </Tab.Screen>
             <Tab.Screen
-                name='Add Product'
-                component={Addproducts}
+                name='Home'
+                component={Home}
                 options={{
-
                     tabBarIcon: ({ focused, size, }) => (
                         <FontAwesome
-                            name='search'
+                            name='codiepie'
                             size={size}
                             color={focused ? "#FC6D3F" : "#cdcdc2"}
                         />
@@ -122,9 +148,55 @@ export default function TabNavigation() {
                 }}
             >
             </Tab.Screen>
+            {Authenticated ? (
+                <Tab.Screen
+                    name='plus'
+                    component={Addproducts}
+                    options={{
+
+                        tabBarIcon: ({ focused, size, }) => (
+                            <FontAwesome
+                                name='plus-square'
+                                size={size}
+                                color={focused ? "#FC6D3F" : "#cdcdc2"}
+                            />
+                        ),
+                        tabBarButton: (props) => (
+                            <TabBarCustomButton
+                                {...props}
+                            />
+                        )
+                    }}
+                >
+                </Tab.Screen>
+            ) : (
+                <Tab.Screen
+                    name='post'
+                    component={Contact}
+                    options={{
+
+                        tabBarIcon: ({ focused, size, }) => (
+                            <FontAwesome
+                                name='plus-square'
+                                size={size}
+                                color={focused ? "#FC6D3F" : "#cdcdc2"}
+                            />
+                        ),
+                        tabBarButton: (props) => (
+                            <TabBarCustomButton
+                                {...props}
+                            />
+                        )
+                    }}
+                >
+                </Tab.Screen>
+            )
+
+            }
+
             <Tab.Screen
                 name='Like'
-                component={Home}
+                component={Like}
                 options={{
                     tabBarIcon: ({ focused, size, }) => (
                         <FontAwesome
@@ -141,25 +213,51 @@ export default function TabNavigation() {
                 }}
             >
             </Tab.Screen>
-            <Tab.Screen
-                name='user'
-                component={Contact}
-                options={{
-                    tabBarIcon: ({ focused, size, }) => (
-                        <FontAwesome
-                            name='user'
-                            size={size}
-                            color={focused ? "#FC6D3F" : "#cdcdc2"}
-                        />
-                    ),
-                    tabBarButton: (props) => (
-                        <TabBarCustomButton
-                            {...props}
-                        />
-                    )
-                }}
-            >
-            </Tab.Screen>
+            {Authenticated ? (
+                <Tab.Screen
+                    name='user'
+                    component={Profile}
+                    options={{
+                        tabBarIcon: ({ focused, size, }) => (
+                            <FontAwesome
+                                name='user'
+                                size={size}
+                                color={focused ? "#FC6D3F" : "#cdcdc2"}
+                            />
+                        ),
+                        tabBarButton: (props) => (
+                            <TabBarCustomButton
+                                {...props}
+                            />
+                        )
+                    }}
+                >
+                </Tab.Screen>
+            ) : (
+                <Tab.Screen
+                    name='user'
+                    component={Contact}
+                    options={{
+                        tabBarIcon: ({ focused, size, }) => (
+                            <FontAwesome
+                                name='user'
+                                size={size}
+                                color={focused ? "#FC6D3F" : "#cdcdc2"}
+                            />
+                        ),
+                        tabBarButton: (props) => (
+                            <TabBarCustomButton
+                                {...props}
+                            />
+                        )
+                    }}
+                >
+                </Tab.Screen>
+
+            )
+
+            }
+
         </Tab.Navigator>
     )
 }

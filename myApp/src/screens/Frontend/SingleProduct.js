@@ -36,56 +36,7 @@ export default function SingleProduct({ route, navigation }) {
         setRestaurant(item)
     }, [])
 
-    // function renderDots() {
-    //     const dotPosition = Animated.divide(scrollX, width)
-    //     return (
-    //         <View style={{ height: 30 }}>
-    //             <View
-    //                 style={{
-    //                     flexDirection: 'row',
-    //                     alignItems: 'center',
-    //                     justifyContent: 'center',
-    //                     height: 10
-    //                 }}
-    //             >
-    //                 {restaurant.images.map((item, index) => {
 
-    //                     const opacity = dotPosition.interpolate({
-    //                         inputRange: [index - 1, index, index + 1],
-    //                         outputRange: [0.3, 1, 0.3],
-    //                         extrapolate: "clamp"
-    //                     })
-
-    //                     const dotSize = dotPosition.interpolate({
-    //                         inputRange: [index - 1, index, index + 1],
-    //                         outputRange: [8 * 0.8, 12, 8 * 0.8],
-    //                         extrapolate: "clamp"
-    //                     })
-
-    //                     const dotColor = dotPosition.interpolate({
-    //                         inputRange: [index - 1, index, index + 1],
-    //                         outputRange: ["#cdcdc2", "#FC6D3F", "#cdcdc2"],
-    //                         extrapolate: "clamp"
-    //                     })
-
-    //                     return (
-    //                         <Animated.View
-    //                             key={`dot-${index}`}
-    //                             opacity={opacity}
-    //                             style={{
-    //                                 borderRadius: 22,
-    //                                 marginHorizontal: 6,
-    //                                 width: dotSize,
-    //                                 height: dotSize,
-    //                                 backgroundColor: dotColor
-    //                             }}
-    //                         />
-    //                     )
-    //                 })}
-    //             </View>
-    //         </View>
-    //     )
-    // }
     return (
         <>
             {restaurant &&
@@ -171,7 +122,8 @@ export default function SingleProduct({ route, navigation }) {
                             marginBottom: 20
                         }}
                     >
-                        <Text style={{ marginVertical: 10, textAlign: 'center', ...FONTS.h2 }}>{restaurant.nameProduct} - {restaurant.price.toFixed(2)}$</Text>
+                        <Text style={{ marginVertical: 10, textAlign: 'center', ...FONTS.h2 }}>
+                            {restaurant.nameProduct} - {restaurant.price.toFixed(2)}$</Text>
                         <Text style={{ ...FONTS.body3, textAlign: "center" }}>{restaurant.description}
                         </Text>
                     </View>
@@ -184,16 +136,11 @@ export default function SingleProduct({ route, navigation }) {
 
                         }}
                     >
-                        <FontAwesome
-                            name='fire'
-                            color="#e25822"
-                            size={30}
-                        />
 
                         <Text style={{
                             ...FONTS.body3, color: COLORS.darygray,
                             marginLeft: 10
-                        }}>{restaurant.calorie.toFixed(2)} cal</Text>
+                        }}>location {restaurant.location}</Text>
                     </View>
                     <SingleProductBottom restaurant={restaurant} amount={amount} navigation={navigation} />
                 </NativeBaseProvider>

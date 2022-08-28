@@ -11,15 +11,16 @@ import {
 export default function Addproducts() {
     const [images, setImages] = useState([])
     const [category, setCategory] = useState(null)
-    const [urls, setUrls] = useState([])
     const [state, setState] = useState({
         nameProduct: "",
         price: "",
-        calorie: "",
+        room: "",
         duration: "",
         location: "",
         description: ""
     })
+
+
 
     const handleChange = (name, value) => {
         setState(s => ({ ...s, [name]: value }))
@@ -65,26 +66,33 @@ export default function Addproducts() {
         });
     }
     const handleUpload = async () => {
-        if (state.nameProduct === "") {
-            return alert(" Please enter Products Name")
+        // if (state.nameProduct === "") {
+        //     return alert(" Please enter Products Name")
+        // }
+        // if (state.price === "") {
+        //     return alert("Please enter Price")
+        // }
+        // if (state.calorie === "") {
+        //     return alert("Please enter calorie")
+        // }
+        // if (state.duration === "") {
+        //     return alert("Please enter duration")
+        // }
+        // if (state.location === "") {
+        //     return alert("Please enter location")
+        // }
+        // if (state.category === null) {
+        //     return alert("Please enter category")
+        // } 
+        if (category === "House") {
+            return {
+
+            }
         }
-        if (state.price === "") {
-            return alert("Please enter Price")
-        }
-        if (state.calorie === "") {
-            return alert("Please enter calorie")
-        }
-        if (state.duration === "") {
-            return alert("Please enter duration")
-        }
-        if (state.location === "") {
-            return alert("Please enter location")
-        }
-        if (state.category === null) {
-            return alert("Please enter category")
-        } if (images.length === 0) {
-            return alert("Please Selected Images")
-        }
+
+        // if (images.length === 0) {
+        //     return alert("Please Selected Images")
+        // }
 
         const urls = [];
         images.map(async (image, i) => {
@@ -101,10 +109,11 @@ export default function Addproducts() {
                 let formData = {
                     nameProduct: state.nameProduct,
                     price: Number(state.price),
-                    calorie: Number(state.calorie),
+                    room: Number(state.room),
                     duration: state.duration,
                     category: category,
                     description: state.description,
+                    location: state.location,
                     images: urls,
                     createDate: firebase.firestore.FieldValue.serverTimestamp(),
                     id: Math.random().toString(36).slice(2)
@@ -169,7 +178,7 @@ export default function Addproducts() {
                         </Box>
                         <Box flexDirection="row">
                             <Stack w="50%" maxWidth="180px">
-                                <FormControl.Label>Calorie</FormControl.Label>
+                                <FormControl.Label>room</FormControl.Label>
                                 <Input _light={{
                                     bg: 'coolGray.100'
                                 }} _dark={{
@@ -177,8 +186,8 @@ export default function Addproducts() {
                                 }} _hover={{
                                     bg: 'coolWhite.200'
                                 }} shadow={2} placeholder="Calorie"
-                                    onChangeText={(value) => handleChange("calorie", value)}
-                                    value={state.calorie}
+                                    onChangeText={(value) => handleChange("room", value)}
+                                    value={state.room}
                                     keyboardType="numeric"
                                 />
                             </Stack>
@@ -209,11 +218,10 @@ export default function Addproducts() {
                                         bg: 'coolGray.800'
                                     }} onValueChange={itemValue => setCategory(itemValue)}
                                 >
-                                    <Select.Item shadow={2} label="Rice" value="Rice" />
-                                    <Select.Item shadow={2} label="Noodles" value="Noodles" />
-                                    <Select.Item shadow={2} label="Hot Dogs" value="Hot Dogs" />
-                                    <Select.Item shadow={2} label="Burgers" value="Burgers" />
-                                    <Select.Item shadow={2} label="Pizza" value="Pizza" />
+                                    <Select.Item shadow={2} label="House" value="House" />
+                                    <Select.Item shadow={2} label="Hotel" value="Hotel" />
+                                    <Select.Item shadow={2} label="condo" value="condo" />
+                                    <Select.Item shadow={2} label="Apartment" value="Apartment" />
                                 </Select>
                             </VStack>
                             <Stack mx="2" w="50%" maxWidth="180px">

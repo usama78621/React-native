@@ -8,17 +8,18 @@ import { useAuthContext } from '../components/context/AuthContext';
 import Contact from '../screens/Frontend/Contact'
 import TabNavigation from './TabNavigation';
 import SingleProduct from '../screens/Frontend/SingleProduct';
-import AdminHome from '../admin/AdminHome';
 import MyCart from '../screens/Frontend/Cart';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Text, View, Button, TouchableOpacity } from "react-native";
 import { navigationRef } from '../screens/Frontend/RootNavigation'
 import Maps from '../screens/Frontend/Maps';
+import { CheckoutScreen } from '../screens/Frontend/CheckoutScreen';
+import Addproducts from '../screens/Dashboard/Addproducts';
 
 const Stack = createNativeStackNavigator();
 
 export default function StackNavigator() {
-    const { Authenticated, handleLogout } = useAuthContext()
+    const { Authenticated, handleLogout, userRole } = useAuthContext()
 
     function LogoTitle() {
         return (
@@ -41,9 +42,10 @@ export default function StackNavigator() {
     }
     return (
         <NavigationContainer
-            ref={navigationRef}
         >
-            <Stack.Navigator>
+            <Stack.Navigator
+                initialRouteName='Tab'
+            >
                 {!Authenticated
                     ? (
                         <Stack.Group screenOptions={{ headerShown: false }}>
@@ -52,42 +54,43 @@ export default function StackNavigator() {
                                 component={Login}
                             />
                             <Stack.Screen name="register" component={Register} />
+                            <Stack.Screen
+                                options={{
+                                    headerRight: () => (
+                                        <TouchableOpacity
+                                            onPress={() => navigationRef.navigate('cart')}
+                                        >
+                                            <MaterialIcons
+                                                name='shopping-basket'
+                                                size={40}
+                                            />
+                                        </TouchableOpacity>
+                                    ),
+                                    headerTitle: (props) => <LogoTitle {...props} />,
+
+                                    headerLeft: () => (
+                                        <TouchableOpacity
+                                            onPress={() => navigationRef.navigate('map')}
+                                        >
+                                            <MaterialIcons
+                                                name='location-pin'
+                                                size={40}
+                                            />
+                                        </TouchableOpacity>
+                                    ),
+                                }}
+                                name="Tab"
+                                component={TabNavigation}
+                            />
                         </Stack.Group>
                     ) : (
                         <>
                             <Stack.Group>
-                                <Stack.Screen
-                                    options={{
-                                        headerRight: () => (
-                                            <TouchableOpacity
-                                                onPress={() => navigationRef.navigate('cart')}
-                                            >
-                                                <MaterialIcons
-                                                    name='shopping-basket'
-                                                    size={40}
-                                                />
-                                            </TouchableOpacity>
-                                        ),
-                                        headerTitle: (props) => <LogoTitle {...props} />,
 
-                                        headerLeft: () => (
-                                            <TouchableOpacity
-                                                onPress={() => navigationRef.navigate('map')}
-                                            >
-                                                <MaterialIcons
-                                                    name='location-pin'
-                                                    size={40}
-                                                />
-                                            </TouchableOpacity>
-                                        ),
-                                    }}
-                                    name="Tab"
-                                    component={TabNavigation}
-                                />
                                 <Stack.Screen name="Contact" component={Contact} />
                                 <Stack.Screen name="Restaurant" component={SingleProduct} />
-                                <Stack.Screen name="admin" component={AdminHome} />
                                 <Stack.Screen name="cart" component={MyCart} />
+                                <Stack.Screen name="admin" component={Addproducts} />
                                 <Stack.Screen name="map" component={Maps} />
                             </Stack.Group>
                         </>

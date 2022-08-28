@@ -4,7 +4,7 @@ import { Dimensions } from "react-native";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
-export default function Products({ navigation, products }) {
+export default function Products({ navigation, filterProducts }) {
     const { width, height } = Dimensions.get("window");
 
     const renderItem = ({ item }) => {
@@ -31,23 +31,6 @@ export default function Products({ navigation, products }) {
                     }}
                 />
                 <View>
-
-                    <View style={{
-                        position: "absolute",
-                        bottom: 0,
-                        height: 50,
-                        backgroundColor: "#fff",
-                        borderRadius: 20,
-                        padding: 10,
-                        width: width * 0.35,
-                        borderTopRightRadius: 25,
-                        borderBottomLeftRadius: 25,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        ...styles.shadow
-                    }}>
-                        <Text style={{ fontSize: 18 }}>{item.duration}</Text>
-                    </View>
                 </View>
                 <Text style={{
                     fontSize: 18,
@@ -74,7 +57,7 @@ export default function Products({ navigation, products }) {
 
     return (
         <FlatList
-            data={products}
+            data={filterProducts}
             keyExtractor={item => `${item.id}`}
             renderItem={renderItem}
             contentContainerStyle={{

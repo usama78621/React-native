@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useStripe } from "@stripe/stripe-react-native";
+
 import {
     View,
     Text,
@@ -11,7 +13,35 @@ import { useCartContext } from '../../components/context/CartContext';
 
 const MyCart = () => {
     const { cart, removeItem, toggleAmount, total } = useCartContext()
+    const stripe = useStripe();
 
+    const payment = async () => {
+        try {
+            // sending request
+            const response = await fetch("http://192.168.18.12:3000/pay", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            const data = await response.json();
+            if (!response.ok) return console.log(data.message);
+            const clientSecret = data.clientSecret;
+            const initSheet = await stripe.initPaymentSheet({
+                paymentIntentClientSecret: clientSecret,
+                merchantDisplayName: 'Merchant Name',
+            });
+            if (initSheet.error) return console.log(initSheet.error.message);
+            const presentSheet = await stripe.presentPaymentSheet({
+                clientSecret,
+            });
+            if (presentSheet.error) return console.log(presentSheet.error.message);
+            alert("Payment complete, thank you!");
+        } catch (err) {
+            console.error(err);
+            console.log("Something went wrong, try again later!");
+        }
+    };
     const increase = (id) => {
         toggleAmount(id, "inc")
     }
@@ -448,7 +478,7 @@ const MyCart = () => {
                                 alignItems: 'center',
                             }}>
                             <TouchableOpacity
-                                onPress={() => (cart.price !== 0 ? checkOut() : null)}
+                                onPress={payment}
                                 style={{
                                     width: '86%',
                                     height: '90%',
@@ -464,7 +494,8 @@ const MyCart = () => {
                                         letterSpacing: 1,
                                         color: "white",
                                         textTransform: 'uppercase',
-                                    }}>
+                                    }}
+                                >
                                     CHECKOUT (${total + total / 20} )
                                 </Text>
                             </TouchableOpacity>

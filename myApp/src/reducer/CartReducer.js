@@ -23,7 +23,6 @@ export const filter_reducer = (state, action) => {
             }
             return { ...state, cart: [...state.cart, newItem] }
         }
-
     }
 
     if (action.type === "REMOVE_ITEM") {

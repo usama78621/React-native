@@ -4,31 +4,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CartContext = createContext();
 
-// const getData = async (dispatch) => {
-//     console.log("dispatch", dispatch);
-//     try {
-//         const data = await AsyncStorage.getItem('cart');
-//         if (data !== null) {
-//             dispatch({ type: "SET_ITEM_CART", payload: JSON.parse(data) })
-//             console.log("daga", JSON.parse(data));
-//             // return data;
-//         }
-//     } catch (error) {
-//         console.log(error);
-//     }
+const getData = async () => {
+    const data = await AsyncStorage.getItem('cart');
+    if (data !== null) {
+        let newdata = JSON.parse(data)
+        console.log('sdjf', newdata);
+        return newdata;
+    } else {
+        return []
+    }
+}
 
-// };
-
-// let users = [
-//     {
-//         id: 1,
-//         name: "usama"
-//     },
-//     {
-//         id: 2,
-//         name: "ali"
-//     },
-// ]
 const initialState = {
     cart: [],
     total_items: 0,
@@ -37,8 +23,10 @@ const initialState = {
 const CartProvider = ({ children }) => {
     const [state, dispatch] = useReducer(filter_reducer, initialState)
     console.log("cart", state.cart);
+
     const addToCart = (restaurantItem, amount) => {
         dispatch({ type: 'ADD_TO_CART', payload: { restaurantItem, amount } })
+
     }
 
     const removeItem = (id) => {
@@ -57,23 +45,11 @@ const CartProvider = ({ children }) => {
         })
     }
 
-
-
-    // useEffect(() => {
-    //     getData(dispatch)
-    // }, [])
-
-    // const setObjectValue = async () => {
-    //     try {
-    //         await AsyncStorage.setItem("cart", JSON.stringify(state.cart)) || [];
-    //     } catch (e) {
-    //         console.log(e);
-    //     }
-
-    // }
+    const setObjectValue = async () => {
+        await AsyncStorage.setItem("cart", JSON.stringify(cartItem))
+    }
 
     useEffect(() => {
-        // setObjectValue()
         dispatch({ type: 'COUNT_CART_TOTALS' })
     }, [state.cart])
 

@@ -1,68 +1,71 @@
-import React, { createContext, useReducer, useContext } from "react";
-import reducer from '../../reducer/ProductsReducer'
+import React, { createContext, useContext, useState, useEffect } from "react";
 import firestore from '@react-native-firebase/firestore';
-import { useAuthContext } from "./AuthContext";
 
 
 const ProductContext = createContext()
 
-const initialState = {
-    products_loading: false,
-    products_error: false,
-    products: [],
-    user_role_loading: false,
-    user_role_error: false,
-    user_role: {},
-}
+
 
 export const ProductProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(reducer, initialState)
-    const { user } = useAuthContext()
+    const [isloading, setIsloading] = useState(false)
+    const [products, setProducts] = useState([])
+    const [filterProducts, setFilterProducts] = useState([])
+    const allCategories = ['all', ...new Set(products.map((item) => {
+        return (
+            item.category
+        )
+    }))];
 
+
+
+    console.log(allCategories);
     const fetchProducts = async () => {
-        dispatch({ type: 'GET_PRODUCTS_BEGIN' })
+        setIsloading(true)
         try {
             let array = []
             firestore()
                 .collection('products')
                 .get()
                 .then(querySnapshot => {
-                    // console.log('Total users: ', querySnapshot.size);
                     querySnapshot.forEach(doc => {
                         array.push({ ...doc.data(), id: doc.id })
-                        dispatch({ type: "ALL_PRODUCTS", payload: array })
                     });
+                    setProducts(array)
+                    setIsloading(false)
                 }).catch(e => {
                     console.log(e);
                 })
         } catch (error) {
-            dispatch({ type: 'GET_PRODUCT_ERROR' })
-        }
-    }
-
-    const fetchUser = async () => {
-        dispatch({ type: "GET_USER_BEGIN" })
-        try {
-            await firestore().collection('users').doc(user.uid).get()
-                .then((userInfo) => {
-                    // console.log(userInfo.data());
-                }).catch(e => {
-                    console.error(e)
-                })
-            dispatch({ type: "USER_INFO", payload: userInfo })
-        } catch (error) {
-            dispatch({ type: "GET_USER_INFO_ERROR" })
+            console.log(e);
         }
     }
 
 
-    React.useEffect(() => {
-        fetchUser()
+    const filterItems = (category) => {
+        if (category === 'all') {
+            setFilterProducts(products);
+            return;
+        } else {
+            const newItems = products.filter((item) => item.category === category);
+            return setFilterProducts(newItems);
+        }
+    };
+
+    useEffect(() => {
+        setFilterProducts(products);
+    }, [products]);
+
+    useEffect(() => {
         fetchProducts()
     }, [])
+
     return <ProductContext.Provider value={{
-        ...state,
-        dispatch
+        filterProducts,
+        allCategories,
+        filterItems,
+        products,
+        isloading,
+        allCategories,
 
     }}>
         {children}
